@@ -11,6 +11,10 @@ export interface JSONSchemaProperty {
     type: string;
     enum?: string[];
   };
+  minimum?: number;
+  maximum?: number;
+  minItems?: number;
+  maxItems?: number;
   default?: any;
 }
 
@@ -18,6 +22,7 @@ export interface JSONSchema {
   type: 'object';
   properties: Record<string, JSONSchemaProperty>;
   required?: string[];
+  additionalProperties?: boolean;
 }
 
 export interface WebMCPToolDefinition {
@@ -25,6 +30,10 @@ export interface WebMCPToolDefinition {
   description: string;
   inputSchema: JSONSchema;
   execute: (input: any) => Promise<any> | any;
+  annotations?: {
+    readOnlyHint?: boolean;
+    [key: string]: any;
+  };
   readOnlyHint?: boolean;
 }
 

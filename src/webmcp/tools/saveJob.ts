@@ -4,6 +4,9 @@ import { saveJob } from '../../lib/savedJobs';
 export const saveJobTool: WebMCPToolDefinition = {
   name: 'save_job',
   description: 'Save a remote job to the user\'s Saved Jobs list by its jobId (e.g., "job-1"). Persists the job in localStorage and immediately updates the website\'s visible Saved Jobs count and view without requiring a page reload.',
+  annotations: {
+    readOnlyHint: false,
+  },
   readOnlyHint: false,
   inputSchema: {
     type: 'object',
@@ -14,6 +17,7 @@ export const saveJobTool: WebMCPToolDefinition = {
       },
     },
     required: ['jobId'],
+    additionalProperties: false,
   },
   execute: async (input: { jobId?: string }) => {
     if (!input || !input.jobId) {

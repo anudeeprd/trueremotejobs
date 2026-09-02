@@ -50,7 +50,7 @@ function getModelContextTarget(): { api: any; name: 'document.modelContext' | 'n
 
 /**
  * Registers all seven WebMCP tools with the browser modelContext API
- * supports AbortSignal for proper lifecycle and cleanup.
+ * supports AbortSignal for clean lifecycle management and StrictMode safety.
  */
 export async function registerAllWebMCPTools(signal?: AbortSignal): Promise<RegistrationStatus> {
   const target = getModelContextTarget();
@@ -79,6 +79,7 @@ export async function registerAllWebMCPTools(signal?: AbortSignal): Promise<Regi
           description: tool.description,
           inputSchema: tool.inputSchema,
           execute: tool.execute,
+          ...(tool.annotations ? { annotations: tool.annotations } : {}),
           ...(tool.readOnlyHint !== undefined ? { readOnlyHint: tool.readOnlyHint } : {}),
         },
         signal ? { signal } : undefined
@@ -87,14 +88,20 @@ export async function registerAllWebMCPTools(signal?: AbortSignal): Promise<Regi
       registered.push(tool.name);
     }
 
-    currentStatus = {
-      isSupported: true,
-      target: target.name,
-      toolCount: registered.length,
-      registeredNames: registered,
-      registeredAt: new Date().toISOString(),
-    };
+    if (!signal?.aborted) {
+      currentStatus = {
+        isSupported: true,
+        target: target.name,
+        toolCount: registered.length,
+        registeredNames: registered,
+        registeredAt: new Date().toISOString(),
+      };
+    }
   } catch (err: any) {
+    if (signal?.aborted) {
+      // Abort is expected during unmount / StrictMode cleanup
+      return currentStatus;
+    }
     console.warn('[WebMCP] Tool registration notice:', err);
     currentStatus = {
       isSupported: true,

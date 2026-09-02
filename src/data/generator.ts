@@ -199,7 +199,7 @@ const COMPANIES: SeedCompany[] = [
     id: 'c-strata-db',
     name: 'StrataDB',
     badgeBg: '#3B82F6',
-    description: 'Next-gen distributed HTAP database built for cloud-native transactional microservices.',
+    description: 'Next-gen distributed HTAP database built for cloud-scale transactional microservices.',
     website: 'https://stratadb.example.com',
     industry: 'Developer Tools',
     companyStage: 'Series B',
@@ -896,6 +896,8 @@ const CURATED_DEMO_JOBS: Job[] = [
 // Helper procedural generation lists
 const ROLES: { title: string; dept: Department; skills: string[]; tech: string[]; minExp: number; maxExp: number; level: ExperienceLevel }[] = [
   { title: 'Senior Backend Engineer', dept: 'Engineering', skills: ['Go', 'Distributed Systems', 'PostgreSQL', 'gRPC', 'Kubernetes'], tech: ['Go', 'PostgreSQL', 'Docker', 'Kubernetes', 'gRPC'], minExp: 5, maxExp: 8, level: 'Senior' },
+  { title: 'Frontend Engineer', dept: 'Engineering', skills: ['React', 'TypeScript', 'Tailwind CSS', 'Next.js', 'Frontend Architecture'], tech: ['React', 'TypeScript', 'Tailwind CSS', 'Vite'], minExp: 3, maxExp: 6, level: 'Mid Level' },
+  { title: 'Senior Frontend Architect', dept: 'Engineering', skills: ['React', 'TypeScript', 'Frontend Performance', 'Design Systems'], tech: ['React', 'TypeScript', 'Next.js', 'Vitest'], minExp: 6, maxExp: 9, level: 'Senior' },
   { title: 'Staff Platform Engineer', dept: 'Engineering', skills: ['Terraform', 'Kubernetes', 'AWS', 'CI/CD', 'Observability'], tech: ['AWS', 'Kubernetes', 'Terraform', 'Prometheus', 'ArgoCD'], minExp: 7, maxExp: 11, level: 'Staff' },
   { title: 'TypeScript Engineer', dept: 'Engineering', skills: ['TypeScript', 'Node.js', 'React', 'GraphQL', 'PostgreSQL'], tech: ['TypeScript', 'Node.js', 'GraphQL', 'Next.js', 'Prisma'], minExp: 4, maxExp: 7, level: 'Mid Level' },
   { title: 'Senior TypeScript Architect', dept: 'Engineering', skills: ['TypeScript', 'Distributed Systems', 'Full Stack', 'Cloud Architecture'], tech: ['TypeScript', 'Node.js', 'React', 'AWS', 'Redis'], minExp: 6, maxExp: 10, level: 'Senior' },
@@ -904,7 +906,10 @@ const ROLES: { title: string; dept: Department; skills: string[]; tech: string[]
   { title: 'Product Designer', dept: 'Design', skills: ['Figma', 'UI Design', 'Design Systems', 'Prototyping', 'User Research'], tech: ['Figma', 'Design Tokens', 'Storybook'], minExp: 3, maxExp: 6, level: 'Mid Level' },
   { title: 'Senior UX Researcher', dept: 'Design', skills: ['User Interviews', 'Usability Testing', 'Quantitative Analysis', 'Figma'], tech: ['Figma', 'Dovetail', 'Lookback', 'Hotjar'], minExp: 5, maxExp: 8, level: 'Senior' },
   { title: 'Technical Product Manager', dept: 'Product', skills: ['Product Strategy', 'API Architecture', 'Agile', 'Data Analysis'], tech: ['Linear', 'SQL', 'Mixpanel', 'Postman'], minExp: 4, maxExp: 7, level: 'Senior' },
+  { title: 'Product Manager (Core Platform)', dept: 'Product', skills: ['Product Discovery', 'User Stories', 'Roadmapping', 'Metrics'], tech: ['Linear', 'Notion', 'Figma'], minExp: 3, maxExp: 5, level: 'Mid Level' },
   { title: 'Associate Product Manager', dept: 'Product', skills: ['Product Discovery', 'User Stories', 'Wireframing', 'Metrics'], tech: ['Linear', 'Notion', 'Figma'], minExp: 1, maxExp: 3, level: 'Junior' },
+  { title: 'Entry Level Software Engineer', dept: 'Engineering', skills: ['TypeScript', 'React', 'Git', 'Problem Solving'], tech: ['TypeScript', 'React', 'Tailwind', 'Git'], minExp: 0, maxExp: 2, level: 'Entry Level' },
+  { title: 'Junior Frontend Developer', dept: 'Engineering', skills: ['React', 'JavaScript', 'HTML/CSS', 'Responsive Design'], tech: ['React', 'JavaScript', 'Tailwind CSS'], minExp: 0, maxExp: 2, level: 'Entry Level' },
   { title: 'DevOps / Site Reliability Engineer', dept: 'Engineering', skills: ['Linux', 'Kubernetes', 'Terraform', 'Datadog', 'Incident Response'], tech: ['Kubernetes', 'Terraform', 'Datadog', 'AWS', 'GitHub Actions'], minExp: 4, maxExp: 7, level: 'Mid Level' },
   { title: 'Senior React Native Developer', dept: 'Engineering', skills: ['React Native', 'TypeScript', 'Expo', 'Mobile CI/CD'], tech: ['React Native', 'TypeScript', 'Expo', 'Fastlane'], minExp: 5, maxExp: 8, level: 'Senior' },
   { title: 'Security Engineer', dept: 'Engineering', skills: ['Application Security', 'Threat Modeling', 'Cloud Security', 'Penetration Testing'], tech: ['AWS IAM', 'Trivy', 'OWASP ZAP', 'Python'], minExp: 4, maxExp: 7, level: 'Mid Level' },
@@ -974,9 +979,10 @@ export function generateDeterministicJobs(): Job[] {
   const targetCount = 200;
 
   for (let i = CURATED_DEMO_JOBS.length + 1; i <= targetCount; i++) {
-    const company = COMPANIES[i % COMPANIES.length];
+    // Cross-rotate company and role using coprime multipliers so every combination is reached
+    const company = COMPANIES[(i * 3) % COMPANIES.length];
     const role = ROLES[i % ROLES.length];
-    const region = REGION_SETS[i % REGION_SETS.length];
+    const region = REGION_SETS[(i * 2) % REGION_SETS.length];
     const salaryBand = SALARY_BANDS[i % SALARY_BANDS.length];
     const daysAgo = (i % 28) + 1; // 1 to 28 days ago
     const hoursAgo = (i * 3) % 24;

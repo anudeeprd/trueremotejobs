@@ -5,7 +5,7 @@ import { compareJobsTool } from '../webmcp/tools/compareJobs';
 import { saveJobTool } from '../webmcp/tools/saveJob';
 import { unsaveJobTool } from '../webmcp/tools/unsaveJob';
 import { getSavedJobsTool } from '../webmcp/tools/getSavedJobs';
-import { clearSavedJobs, isJobSaved, getSavedJobIds } from '../lib/savedJobs';
+import { clearSavedJobs, isJobSaved, getSavedJobIds, subscribeToSavedJobs } from '../lib/savedJobs';
 
 describe('Hackathon Judge End-to-End Demonstration Sequence', () => {
   beforeEach(() => {
@@ -13,8 +13,12 @@ describe('Hackathon Judge End-to-End Demonstration Sequence', () => {
   });
 
   it('executes the full judge demonstration script flawlessly', async () => {
-    // 0. Verify starts with NO saved jobs
+    // 0. Verify starts with NO saved jobs and setup subscriber to track UI reactivity
     expect(getSavedJobIds()).toEqual([]);
+    const observedCounts: number[] = [0];
+    const unsubscribe = subscribeToSavedJobs((ids) => {
+      observedCounts.push(ids.length);
+    });
 
     // 1. Agent asks: "Find remote React Native jobs open to candidates from India paying at least $60,000."
     const searchResult = await searchJobsTool.execute({
@@ -81,5 +85,9 @@ describe('Hackathon Judge End-to-End Demonstration Sequence', () => {
     const finalSavedCheck = await getSavedJobsTool.execute({});
     expect(finalSavedCheck.totalSaved).toBe(1);
     expect(finalSavedCheck.savedJobIds).toEqual([thirdJob.id]);
+
+    // 8. Verify the React UI observed the state mutations immediately (0 -> 1 -> 2 -> 1)
+    expect(observedCounts).toEqual([0, 1, 2, 1]);
+    unsubscribe();
   });
 });

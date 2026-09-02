@@ -74,22 +74,29 @@ export function searchJobs(params: JobSearchParams = {}): JobSearchResponse {
 
   // 1. General query match (across title, company, description, skills, techStack, industry)
   if (query && query.trim()) {
-    const qTerms = query.toLowerCase().trim().split(/\s+/);
+    const qPhrase = query.toLowerCase().trim();
+    const qTerms = qPhrase.split(/\s+/);
     filtered = filtered.filter(job => {
       const searchTarget = [
         job.title,
         job.company.name,
         job.company.industry,
-        job.company.description,
         job.description,
         ...job.skills.required,
         ...job.skills.preferred,
         ...job.techStack,
-        ...job.remote.allowedCountries,
-        ...job.remote.allowedRegions,
       ].join(' ').toLowerCase();
 
-      return qTerms.every(term => searchTarget.includes(term));
+      // Priority 1: Contiguous phrase match (e.g. "React Native", "Product Designer")
+      if (searchTarget.includes(qPhrase)) {
+        return true;
+      }
+
+      // Priority 2: All individual words present as distinct terms
+      return qTerms.every(term => {
+        const regex = new RegExp(`(^|[^a-z0-9])${term}([^a-z0-9]|$)`, 'i');
+        return regex.test(searchTarget);
+      });
     });
   }
 

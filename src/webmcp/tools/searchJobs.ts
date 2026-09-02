@@ -5,6 +5,9 @@ import { JobSearchParams } from '../../types/job';
 export const searchJobsTool: WebMCPToolDefinition = {
   name: 'search_jobs',
   description: 'Search and filter the TrueRemoteJobs demo catalog for remote job opportunities. Supports filtering by query keywords, job title, skills, candidate-country eligibility (e.g. "India"), remote region (e.g. "APAC", "Worldwide"), employment type, experience level, minimum salary, company stage, industry, timezone, and posting recency (postedWithinDays). Returns a compact structured summary and list of matching jobs.',
+  annotations: {
+    readOnlyHint: true,
+  },
   readOnlyHint: true,
   inputSchema: {
     type: 'object',
@@ -42,6 +45,7 @@ export const searchJobsTool: WebMCPToolDefinition = {
       },
       minimumSalary: {
         type: 'number',
+        minimum: 0,
         description: 'Minimum acceptable annual salary in USD (e.g., 60000).',
       },
       companyStage: {
@@ -55,6 +59,7 @@ export const searchJobsTool: WebMCPToolDefinition = {
       },
       postedWithinDays: {
         type: 'number',
+        minimum: 1,
         description: 'Only return jobs posted within the specified number of days (e.g., 7 for the last week).',
       },
       timezone: {
@@ -63,6 +68,8 @@ export const searchJobsTool: WebMCPToolDefinition = {
       },
       limit: {
         type: 'number',
+        minimum: 1,
+        maximum: 50,
         description: 'Maximum number of jobs to return in this search batch (default 10).',
       },
       sortBy: {
@@ -71,6 +78,7 @@ export const searchJobsTool: WebMCPToolDefinition = {
         description: 'Sorting criterion for results.',
       }
     },
+    additionalProperties: false,
   },
   execute: async (input: JobSearchParams = {}) => {
     // Default limit to 10 for AI agent consumption unless requested otherwise

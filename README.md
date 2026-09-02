@@ -1,96 +1,124 @@
 # TrueRemoteJobs 🌐
 
-> **Remote jobs you can actually apply for.**
+> **Remote jobs you can actually apply for.**  
 > A discovery web application featuring deep browser **WebMCP (Web Model Context Protocol)** integration.
 
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![WebMCP Standard](https://img.shields.io/badge/WebMCP-document.modelContext-indigo.svg)](https://github.com/w3c/webmachinelearning)
 [![React](https://img.shields.io/badge/React-18-blue.svg)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org)
 [![Vite](https://img.shields.io/badge/Vite-6.2-purple.svg)](https://vitejs.dev)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-teal.svg)](https://tailwindcss.com)
-[![Tests](https://img.shields.io/badge/Vitest-27%2F27%20Passing-brightgreen.svg)](https://vitest.dev)
+[![Tests](https://img.shields.io/badge/Vitest-28%2F28%20Passing-brightgreen.svg)](https://vitest.dev)
 
 ---
 
-## 🎯 Hackathon Objective
+## 🎯 What is TrueRemoteJobs?
 
-The primary differentiator of **TrueRemoteJobs** is demonstrating how an AI agent can discover, inspect, compare, and save remote jobs by interacting with the website through **browser-native WebMCP tools**, rather than fragile HTML scraping or synthetic DOM clicking.
+**TrueRemoteJobs** is a modern remote job discovery platform specifically architected to demonstrate how external AI agents interact with web applications through **structured, client-side WebMCP browser tools** rather than scraping HTML DOM elements or simulating mouse clicks.
 
-When an AI agent searches or saves positions, the visible website responds in real time without requiring a page refresh.
-
----
-
-## 🚀 Why WebMCP Makes Job Discovery Better
-
-| Traditional AI Web Agent | TrueRemoteJobs with WebMCP |
-|---|---|
-| Parses unpredictable HTML DOM tags | Calls clean, structured JavaScript tools (`search_jobs`, `get_job_details`) |
-| Brittle against CSS class and markup updates | Stable semantic JSON schema contract |
-| Struggles with multi-faceted filtering & pagination | Passes typed arguments directly (`candidateCountry: "India"`, `minimumSalary: 60000`) |
-| Cannot reliably persist state into user sessions | Executes action tools (`save_job`) that update `localStorage` and visible React UI |
+The application includes a curated deterministic dataset of **200 realistic fictional remote jobs** across 20 tech startups, with multi-faceted filtering for geographic eligibility (Worldwide, India-eligible, APAC, EMEA, Americas), salary ranges, funding stages, experience levels, and skills.
 
 ---
 
-## 🛠️ Supported WebMCP Tools
+## 💡 Why Remote Job Search is a Strong WebMCP Use Case
 
-All tools are registered imperatively via the emerging W3C standard:
+Remote job hunting is traditionally plagued by messy data and fragmented eligibility rules:
+1. **Hidden Eligibility Gotchas**: Positions labeled "remote" often restrict hiring to specific countries or timezones.
+2. **Fragmented Filtering**: Human users must manually cross-reference salaries, visa policies, tech stacks, and company stages across dozens of filters.
+3. **Fragile Web Scraping**: Traditional AI agents scraping job boards struggle with infinite scrolling, dynamic DOM changes, and modal overlays.
 
-```ts
-document.modelContext.registerTool({ ... }, { signal });
-```
+With **WebMCP**, the website provides a semantic contract directly via `document.modelContext`:
+* **Structured Queries**: Agents query candidate-country eligibility (`candidateCountry: "India"`), minimum salary (`minimumSalary: 60000`), and role recency via typed JSON schemas.
+* **Side-by-Side Comparison**: Agents request side-by-side matrices across 2–5 positions without dumping full HTML pages into context windows.
+* **Synchronized State**: When an agent invokes the action tool `save_job`, the browser's `localStorage` and visible React UI update synchronously with zero page refresh required.
 
-*(With graceful fallback to `navigator.modelContext` and feature detection for non-WebMCP browsers).*
+---
+
+## 👥 What Humans Can Do in the UI
+
+* **Instant Search & Faceting**: Search by keyword, role, technology, or company name with live suggestions.
+* **Granular Filter Drawer**: Filter by candidate country eligibility, remote regions, experience levels, minimum salary ($40k to $120k+), startup stages (Seed, Series A, Series B), and posting recency.
+* **Rich Job Cards**: Scan company logos, funding stages, salary ranges, skills tags, and clear regional eligibility badges (e.g. `🇮🇳 India eligible`).
+* **Slide-Over Job Details**: Inspect full company backgrounds, funding history, responsibilities, requirements, benefits, and tech stack details.
+* **Saved Jobs Collection**: Bookmark interesting roles and manage saved positions.
+
+---
+
+## 🤖 What Agents Can Do with WebMCP
+
+External AI agents have direct access to seven structured browser tools exposed on `document.modelContext`:
 
 | Tool Name | Type | Description |
 |---|---|---|
-| `search_jobs` | Read-only | Search and filter jobs by query, skills, candidate country (e.g. India), region, salary, stage, recency, etc. Returns compact structured items. |
-| `get_job_details` | Read-only | Fetch comprehensive specifications, tech stack, responsibilities, requirements, and benefits by `jobId`. |
-| `compare_jobs` | Read-only | Compare 2–5 jobs side-by-side in a structured matrix. |
-| `save_job` | **Action** | Saves a job into `localStorage` and immediately triggers a visible UI update in the React application. |
-| `unsave_job` | **Action** | Removes a job from the user's saved collection with instant UI synchronization. |
+| `search_jobs` | Read-only | Search and filter the catalog by keywords, skills, candidate country (e.g. India), region, minimum salary, stage, recency, etc. Returns compact structured items. |
+| `get_job_details` | Read-only | Retrieve complete specifications, tech stack, responsibilities, requirements, and benefits for a specific `jobId`. |
+| `compare_jobs` | Read-only | Compare 2 to 5 remote jobs side-by-side in a structured comparison matrix. |
+| `save_job` | **Action Tool** | Saves a job into `localStorage` and immediately updates the visible UI saved count and collection without refreshing. |
+| `unsave_job` | **Action Tool** | Removes a job from the saved collection with immediate UI synchronization. |
 | `get_saved_jobs` | Read-only | Returns all jobs currently saved by the user or agent. |
-| `get_filter_options` | Read-only | Returns valid filter facets (stages, countries, skills, industries). |
+| `get_filter_options` | Read-only | Returns valid filter facets across all searchable categories. |
+
+---
+
+## 🧪 Browser Testing Instructions (For Hackathon Judges)
+
+You can test TrueRemoteJobs using either of the following official WebMCP environments:
+
+### Option A: ChatGPT In-App Browser
+1. Open the deployed website link directly inside ChatGPT's in-app browser.
+2. ChatGPT automatically discovers the 7 registered tools through `document.modelContext` and enables direct agent interaction.
+
+### Option B: Chrome 149+ with WebMCP Flag
+1. Launch **Google Chrome 149+**.
+2. Navigate to:
+   ```
+   chrome://flags/#enable-webmcp-testing
+   ```
+3. Set the flag to **Enabled**.
+4. Click **Relaunch** to restart Chrome.
+5. Open the TrueRemoteJobs URL.
 
 ---
 
 ## 🧑‍⚖️ Hackathon Judge Demonstration Script
 
-To test the complete workflow using a WebMCP-capable browser agent:
+Try this step-by-step sequence in your WebMCP-enabled agent:
 
 1. **Search matching jobs:**
-   > *"Find remote React Native jobs that allow candidates from India, pay at least $60,000, and were posted recently."*
-   > → Invokes `search_jobs({ query: "React Native", candidateCountry: "India", minimumSalary: 60000 })`
+   > *"Find remote React Native jobs that allow candidates from India, pay at least $60,000, and were posted recently."*  
+   > → Agent invokes `search_jobs({ query: "React Native", candidateCountry: "India", minimumSalary: 60000 })`
 
 2. **Inspect job details:**
-   > *"Show me details about the first two."*
-   > → Invokes `get_job_details({ jobId: "job-1" })` and `get_job_details({ jobId: "job-2" })`
+   > *"Show me details about the first two."*  
+   > → Agent invokes `get_job_details({ jobId: "job-1" })` and `get_job_details({ jobId: "job-2" })`
 
 3. **Compare jobs side-by-side:**
-   > *"Compare these three jobs."*
-   > → Invokes `compare_jobs({ jobIds: ["job-1", "job-2", "job-3"] })`
+   > *"Compare these three jobs."*  
+   > → Agent invokes `compare_jobs({ jobIds: ["job-1", "job-2", "job-3"] })`
 
 4. **Save jobs (Action Tool):**
-   > *"Save the first and third jobs."*
-   > → Invokes `save_job({ jobId: "job-1" })` and `save_job({ jobId: "job-3" })`
-   > **Notice:** The website's Saved Jobs counter badge immediately updates to **2**, and both jobs appear in the **Saved Jobs** tab with zero refresh!
+   > *"Save the first and third jobs."*  
+   > → Agent invokes `save_job({ jobId: "job-1" })` and `save_job({ jobId: "job-3" })`  
+   > **Notice:** The website's Saved Jobs counter badge immediately updates to **2**, and both jobs appear in the **Saved Jobs** view with zero refresh!
 
-5. **Verify saved list:**
-   > *"What jobs have I saved?"*
-   > → Invokes `get_saved_jobs({})`
+5. **Query saved collection:**
+   > *"What jobs have I saved?"*  
+   > → Agent invokes `get_saved_jobs({})`
 
 6. **Unsave a job:**
-   > *"Remove the first saved job."*
-   > → Invokes `unsave_job({ jobId: "job-1" })`
+   > *"Remove the first saved job."*  
+   > → Agent invokes `unsave_job({ jobId: "job-1" })`  
    > **Notice:** The job immediately disappears from the Saved Jobs screen.
 
 ---
 
-## 🧱 Single Source of Truth Architecture
+## 🧱 Architecture & Single Source of Truth
 
 ```
                                ┌───────────────────────────┐
                                │   WebMCP-Capable Agent    │
-                               │  (Chrome Canary / MCP-B)  │
+                               │  (ChatGPT / Chrome 149+)  │
                                └─────────────┬─────────────┘
                                              │ document.modelContext
                                              ▼
@@ -104,43 +132,25 @@ To test the complete workflow using a WebMCP-capable browser agent:
        │     Canonical Business Logic & Store        │
        │  • jobSearch.ts (deterministic filtering)   │
        │  • savedJobs.ts (localStorage + CustomEvent)│
-       │  • jobs.ts (200 high-quality seeded jobs)   │
+       │  • generator.ts (200 deterministic jobs)    │
        └─────────────────────────────────────────────┘
 ```
 
-Both the visible UI and the WebMCP tools interact with the exact same store. When `save_job` or `unsave_job` executes, a `trueremotejobs:saved-updated` event is broadcasted, notifying React hooks (`useSavedJobs`) synchronously.
+Both the visible React UI and the WebMCP tools interact with the exact same business logic:
+* Canonical search queries call `searchJobs()`.
+* Canonical bookmark toggles and agent saves call `saveJob()` / `unsaveJob()`.
+* State mutations dispatch `trueremotejobs:saved-updated` events, ensuring React components and custom hooks (`useSavedJobs`) update synchronously.
 
 ---
 
-## 📊 Dataset Specifications
-
-- **Total Positions:** 200 high-quality deterministic jobs.
-- **Companies:** 20 distinct fictional technology startups (NovaStack, Orbit Labs, Mosaic AI, Cinder, Lantern Labs, Cloudsmithy, FocalPoint, etc.).
-- **Funding Stages:** Bootstrapped, Pre-Seed, Seed, Series A, Series B, Series C+, Public (biased toward Seed/Series A/Series B).
-- **Geographic Eligibility:**
-  - Worldwide Remote
-  - India-eligible Remote
-  - APAC, EMEA, Americas, Europe
-- **Verified Primary Scenarios:**
-  1. React Native + India eligible + $60k+
-  2. Frontend + $60k+
-  3. Senior Engineering + Series A
-  4. Product Designer + Worldwide
-  5. AI Engineer + posted within 7 days
-  6. Entry Level + India eligible
-  7. Product Manager + Seed/Series A
-  8. TypeScript + $100k+
-
----
-
-## ⚠️ Fictional Data Disclaimer
+## ⚠️ Fictional Data Disclosure
 
 > **Demo dataset · Fictional job listings.**  
-> Positions shown in TrueRemoteJobs are fictional records created specifically for this WebMCP prototype. No real application will be submitted or processed.
+> TrueRemoteJobs is a prototype application built exclusively for hackathon evaluation of the Web Model Context Protocol. All 200 job positions, companies (e.g. NovaStack, Orbit Labs, Mosaic AI), salaries, and application policies are generated fictional records. No real applications will be processed or submitted.
 
 ---
 
-## 💻 Quick Start (Local Development)
+## 💻 Local Setup & Development
 
 ### 1. Prerequisites
 - Node.js `>= 18.0.0`
@@ -151,92 +161,26 @@ Both the visible UI and the WebMCP tools interact with the exact same store. Whe
 npm install
 ```
 
-### 3. Run Development Server
+### 3. Start Development Server
 ```bash
 npm run dev
 ```
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### 4. Run Automated Tests
+### 4. Run Automated Test Suite
 ```bash
 npm run test
 ```
-Runs 27 automated tests checking search queries, WebMCP tools, and the judge demonstration sequence.
+Runs 28 automated tests covering search queries, reactive state persistence, WebMCP tool schemas, and the full end-to-end judge demonstration workflow.
 
 ### 5. Build for Production
 ```bash
 npm run build
 ```
-Generates production build in `dist/`.
+Type checks and bundles production assets into `dist/`.
 
 ---
 
-## 🚀 Deployment
+## 📄 License
 
-The project is zero-dependency on servers or databases and can be deployed directly as a static site:
-
-- **Vercel:** `npm run build` → Output directory: `dist`
-- **Netlify:** `npm run build` → Publish directory: `dist`
-- **Cloudflare Pages:** Framework preset: Vite → Build output: `dist`
-
----
-
-## 📂 Project Structure
-
-```
-trueremotejobs/
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-├── tailwind.config.js
-├── postcss.config.js
-├── src/
-│   ├── main.tsx                      # App entry point
-│   ├── App.tsx                       # Root layout & tab router
-│   ├── index.css                     # Tailwind styling & tokens
-│   ├── types/
-│   │   ├── job.ts                    # Canonical Job & Company types
-│   │   └── webmcp.ts                 # WebMCP ModelContext interfaces
-│   ├── data/
-│   │   ├── jobs.ts                   # Exported 200-job catalog
-│   │   └── generator.ts              # Deterministic data generation engine
-│   ├── lib/
-│   │   ├── jobSearch.ts              # Canonical search, compare & facets
-│   │   ├── savedJobs.ts              # Reactive saved jobs store (localStorage)
-│   │   └── dateUtils.ts              # Relative dates & currency formatting
-│   ├── webmcp/
-│   │   ├── registry.ts               # document.modelContext registration
-│   │   └── tools/                    # 7 WebMCP tools
-│   │       ├── searchJobs.ts
-│   │       ├── getJobDetails.ts
-│   │       ├── compareJobs.ts
-│   │       ├── saveJob.ts
-│   │       ├── unsaveJob.ts
-│   │       ├── getSavedJobs.ts
-│   │       └── getFilterOptions.ts
-│   ├── components/
-│   │   ├── layout/
-│   │   │   ├── Navbar.tsx            # Sticky header with real-time saved badge
-│   │   │   ├── DisclaimerBanner.tsx  # Persistent demo disclaimer
-│   │   │   └── Footer.tsx
-│   │   ├── discover/
-│   │   │   ├── DiscoverView.tsx      # Main discovery page
-│   │   │   ├── SearchBar.tsx         # Search box with quick suggestion chips
-│   │   │   ├── FilterBar.tsx         # Quick filter buttons & sort dropdown
-│   │   │   ├── FilterDrawer.tsx      # Full slide-out faceted filter panel
-│   │   │   ├── ActiveFilters.tsx     # Removable active filter tags
-│   │   │   └── JobCard.tsx           # Rich card with badges, salary & bookmark
-│   │   ├── details/
-│   │   │   └── JobDetailDrawer.tsx   # Slide-over full job drawer + demo modal
-│   │   ├── saved/
-│   │   │   └── SavedJobsView.tsx     # Reactive saved positions screen
-│   │   └── about/
-│   │       └── AboutDemoView.tsx     # WebMCP tools, schemas & judge prompts
-│   └── test/
-│       ├── setup.ts
-│       ├── jobSearch.test.ts         # Query & filter verification
-│       ├── savedJobs.test.ts         # Persistence & reactivity verification
-│       ├── webmcp.test.ts            # WebMCP registration & tools test
-│       └── judgeDemoWorkflow.test.ts # End-to-end judge demonstration script
-```
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.

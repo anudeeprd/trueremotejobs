@@ -4,6 +4,9 @@ import { unsaveJob } from '../../lib/savedJobs';
 export const unsaveJobTool: WebMCPToolDefinition = {
   name: 'unsave_job',
   description: 'Remove a remote job from the user\'s Saved Jobs list by its jobId (e.g. "job-1"). Immediately removes the job from localStorage and visibly updates the website without a page reload.',
+  annotations: {
+    readOnlyHint: false,
+  },
   readOnlyHint: false,
   inputSchema: {
     type: 'object',
@@ -14,6 +17,7 @@ export const unsaveJobTool: WebMCPToolDefinition = {
       },
     },
     required: ['jobId'],
+    additionalProperties: false,
   },
   execute: async (input: { jobId?: string }) => {
     if (!input || !input.jobId) {

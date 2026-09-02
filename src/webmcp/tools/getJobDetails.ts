@@ -4,6 +4,9 @@ import { getJobById } from '../../lib/jobSearch';
 export const getJobDetailsTool: WebMCPToolDefinition = {
   name: 'get_job_details',
   description: 'Retrieve comprehensive details for a specific remote job listing by its unique jobId (e.g. "job-1", "job-2"). Returns full company background, salary, equity, remote policy, required & preferred qualifications, responsibilities, tech stack, and benefits.',
+  annotations: {
+    readOnlyHint: true,
+  },
   readOnlyHint: true,
   inputSchema: {
     type: 'object',
@@ -14,6 +17,7 @@ export const getJobDetailsTool: WebMCPToolDefinition = {
       },
     },
     required: ['jobId'],
+    additionalProperties: false,
   },
   execute: async (input: { jobId?: string }) => {
     if (!input || !input.jobId) {
