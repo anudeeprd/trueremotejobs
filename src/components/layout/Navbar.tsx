@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe2, Bookmark, Compass, HelpCircle, Bot } from 'lucide-react';
+import { Globe2, Bookmark, Compass, HelpCircle } from 'lucide-react';
 import { useSavedJobs } from '../../lib/savedJobs';
 
 export type NavTab = 'discover' | 'saved' | 'about';
@@ -37,13 +37,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onSelectTab }) => {
                 </p>
               </div>
             </button>
-
-            {/* WebMCP Badge */}
-            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50 border border-indigo-200/70 text-indigo-700 text-xs font-semibold">
-              <Bot className="w-3.5 h-3.5 text-indigo-600" />
-              <span>WebMCP Demo</span>
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            </div>
           </div>
 
           {/* Navigation Links */}

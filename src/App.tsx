@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { DisclaimerBanner } from './components/layout/DisclaimerBanner';
 import { Navbar, NavTab } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { DiscoverView } from './components/discover/DiscoverView';
@@ -56,10 +55,6 @@ export function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-zinc-900 selection:bg-indigo-100 selection:text-indigo-900">
-      
-      {/* Mandatory Persistent Demo Disclaimer */}
-      <DisclaimerBanner />
-
       {/* Sticky Navigation Bar */}
       <Navbar currentTab={currentTab} onSelectTab={handleSelectTab} />
 
