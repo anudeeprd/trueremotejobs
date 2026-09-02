@@ -3,7 +3,7 @@ import { saveJob } from '../../lib/savedJobs';
 
 export const saveJobTool: WebMCPToolDefinition = {
   name: 'save_job',
-  description: 'Save a remote job to the user\'s Saved Jobs list by its jobId (e.g., "job-1"). Persists the job in localStorage and immediately updates the website\'s visible Saved Jobs count and view without requiring a page reload.',
+  description: 'Save a remote job to the user\'s Saved Jobs list by its jobId (e.g., "job-1"). When the user refers to ordinal search results (e.g. "save the first and third", "save the second job"), use the jobIds corresponding to resultNumber 1, 2, 3, etc. from the most recent search_jobs results array. Persists the job in localStorage and immediately updates the website\'s visible Saved Jobs count and view without requiring a page reload.',
   annotations: {
     readOnlyHint: false,
   },

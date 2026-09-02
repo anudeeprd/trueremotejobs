@@ -3,7 +3,7 @@ import { compareJobs } from '../../lib/jobSearch';
 
 export const compareJobsTool: WebMCPToolDefinition = {
   name: 'compare_jobs',
-  description: 'Compare 2 to 5 remote jobs side-by-side using their jobIds (e.g. ["job-1", "job-2", "job-3"]). Returns a structured comparison matrix of salary, remote eligibility, tech stack, required & preferred skills, company stage, benefits, and experience level.',
+  description: 'Compare 2 to 5 remote jobs side-by-side using their jobIds (e.g. ["job-1", "job-2", "job-3"]). Returns a structured comparison matrix of salary, remote eligibility, tech stack, required & preferred skills, company stage, benefits, and experience level. When the user refers to ordinal search results (e.g. "compare the first three", "compare the best three"), use the jobIds corresponding to resultNumber 1, 2, 3, etc. from the most recent search_jobs results.',
   annotations: {
     readOnlyHint: true,
   },

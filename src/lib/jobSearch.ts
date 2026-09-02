@@ -13,10 +13,12 @@ import {
 import { getRelativeTime, formatSalary } from './dateUtils';
 
 /**
- * Transforms full Job into compact agent/search-friendly item
+ * Transforms full Job into compact agent/search-friendly item with explicit resultNumber and jobId
  */
-export function formatJobSummary(job: Job): JobSearchResultItem {
+export function formatJobSummary(job: Job, index: number = 0): JobSearchResultItem {
   return {
+    resultNumber: index + 1,
+    jobId: job.id,
     id: job.id,
     title: job.title,
     company: {
@@ -212,8 +214,12 @@ export function searchJobs(params: JobSearchParams = {}): JobSearchResponse {
   const totalMatches = filtered.length;
   const paginated = filtered.slice(offset, offset + limit);
 
+  const mappedJobs = paginated.map((job, idx) => formatJobSummary(job, offset + idx));
+
   return {
     totalMatches,
+    total: totalMatches,
+    resultReferenceNote: "For follow-up requests such as 'first result' or 'third job', use the jobId from the corresponding resultNumber in this ordered results array.",
     querySummary: {
       filtersApplied: {
         query: query || null,
@@ -229,7 +235,8 @@ export function searchJobs(params: JobSearchParams = {}): JobSearchResponse {
       returnedCount: paginated.length,
       hasMore: offset + limit < totalMatches,
     },
-    jobs: paginated.map(formatJobSummary),
+    jobs: mappedJobs,
+    results: mappedJobs,
   };
 }
 

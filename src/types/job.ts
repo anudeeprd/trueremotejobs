@@ -127,16 +127,21 @@ export interface JobSearchParams {
 
 export interface JobSearchResponse {
   totalMatches: number;
+  total: number; // Convenience alias for totalMatches
+  resultReferenceNote: string;
   querySummary: {
     filtersApplied: Record<string, any>;
     returnedCount: number;
     hasMore: boolean;
   };
   jobs: JobSearchResultItem[];
+  results: JobSearchResultItem[]; // Ordered array alias for jobs
 }
 
 export interface JobSearchResultItem {
-  id: string;
+  resultNumber: number; // 1-indexed ordinal position (e.g. 1 for 'first result', 2 for 'second one')
+  jobId: string; // The canonical job identifier for follow-up tool calls (e.g. 'job-1')
+  id: string; // Backwards-compatible alias for jobId
   title: string;
   company: {
     name: string;

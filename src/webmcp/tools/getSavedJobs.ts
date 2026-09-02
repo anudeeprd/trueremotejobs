@@ -4,7 +4,7 @@ import { formatJobSummary } from '../../lib/jobSearch';
 
 export const getSavedJobsTool: WebMCPToolDefinition = {
   name: 'get_saved_jobs',
-  description: 'Retrieve the list of all remote jobs currently saved in the user\'s Saved Jobs collection on TrueRemoteJobs. Returns total count, saved IDs, and compact structured details for each saved position.',
+  description: 'Retrieve the list of all remote jobs currently saved in the user\'s Saved Jobs collection on TrueRemoteJobs. Returns total count, saved IDs, and compact structured details for each saved position with explicit "resultNumber" and "jobId" fields.',
   annotations: {
     readOnlyHint: true,
   },
@@ -16,10 +16,12 @@ export const getSavedJobsTool: WebMCPToolDefinition = {
   },
   execute: async () => {
     const jobs = getSavedJobs();
+    const mapped = jobs.map((j, idx) => formatJobSummary(j, idx));
     return {
       totalSaved: jobs.length,
       savedJobIds: jobs.map(j => j.id),
-      jobs: jobs.map(formatJobSummary),
+      jobs: mapped,
+      results: mapped,
     };
   },
 };

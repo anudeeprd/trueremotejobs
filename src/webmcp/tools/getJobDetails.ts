@@ -3,7 +3,7 @@ import { getJobById } from '../../lib/jobSearch';
 
 export const getJobDetailsTool: WebMCPToolDefinition = {
   name: 'get_job_details',
-  description: 'Retrieve comprehensive details for a specific remote job listing by its unique jobId (e.g. "job-1", "job-2"). Returns full company background, salary, equity, remote policy, required & preferred qualifications, responsibilities, tech stack, and benefits.',
+  description: 'Retrieve comprehensive details for a specific remote job listing by its unique jobId (e.g. "job-1", "job-2"). Returns full company background, salary, equity, remote policy, required & preferred qualifications, responsibilities, tech stack, and benefits. When the user refers to an ordinal result from a previous search_jobs call (such as "first result", "the second one", "details for the first"), use that specific result\'s jobId from the search_jobs results array rather than inferring from any currently open or visible UI state.',
   annotations: {
     readOnlyHint: true,
   },

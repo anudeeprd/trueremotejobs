@@ -3,7 +3,7 @@ import { unsaveJob } from '../../lib/savedJobs';
 
 export const unsaveJobTool: WebMCPToolDefinition = {
   name: 'unsave_job',
-  description: 'Remove a remote job from the user\'s Saved Jobs list by its jobId (e.g. "job-1"). Immediately removes the job from localStorage and visibly updates the website without a page reload.',
+  description: 'Remove a remote job from the user\'s Saved Jobs list by its jobId (e.g. "job-1"). When the user refers to an ordinal job (such as "remove the first saved job" or "unsave the second one"), use the jobId of that saved job from get_saved_jobs. Immediately removes the job from localStorage and visibly updates the website without a page reload.',
   annotations: {
     readOnlyHint: false,
   },

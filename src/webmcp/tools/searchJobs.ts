@@ -4,7 +4,7 @@ import { JobSearchParams } from '../../types/job';
 
 export const searchJobsTool: WebMCPToolDefinition = {
   name: 'search_jobs',
-  description: 'Search and filter the TrueRemoteJobs demo catalog for remote job opportunities. Supports filtering by query keywords, job title, skills, candidate-country eligibility (e.g. "India"), remote region (e.g. "APAC", "Worldwide"), employment type, experience level, minimum salary, company stage, industry, timezone, and posting recency (postedWithinDays). Returns a compact structured summary and list of matching jobs.',
+  description: 'Search and filter the TrueRemoteJobs demo catalog for remote job opportunities. Supports filtering by query keywords, job title, skills, candidate-country eligibility (e.g. "India"), remote region (e.g. "APAC", "Worldwide"), employment type, experience level, minimum salary, company stage, industry, timezone, and posting recency (postedWithinDays). Returns an ordered array of matching jobs with explicit "resultNumber" (1, 2, 3...) and "jobId" fields. When users make follow-up requests such as "the first result", "the second one", "compare the first three", or "save the first and third", use the jobId associated with that resultNumber from the returned results array.',
   annotations: {
     readOnlyHint: true,
   },
