@@ -67,7 +67,7 @@ export const DiscoverView: React.FC<DiscoverViewProps> = ({ onSelectJob }) => {
           Find remote work <span className="text-indigo-600 underline decoration-indigo-200 decoration-wavy underline-offset-8">without the noise.</span>
         </h1>
         <p className="text-sm sm:text-base text-zinc-600 leading-relaxed max-w-2xl mx-auto">
-          Search remote opportunities by role, candidate country eligibility, salary, skills, timezone, and company stage. Powered by structured WebMCP browser discovery.
+          Search remote opportunities by role, candidate country eligibility, salary, skills, timezone, and company stage.
         </p>
       </div>
 
